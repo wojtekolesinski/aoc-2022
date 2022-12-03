@@ -6,19 +6,15 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"log"
+	"github.com/wojtekolesinski/aoc-2022/util"
 )
 
-func checkError(e error) {
-	if e != nil {
-		log.Fatal(e)
-	}
-}
+
 
 func main() {
 
 	file, err := os.Open("aoc/1/input.txt")
-	checkError(err)
+	util.CheckError(err)
 
 	defer file.Close()
 
