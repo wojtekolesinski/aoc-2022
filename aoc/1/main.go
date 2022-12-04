@@ -35,7 +35,7 @@ func main() {
 			sum = 0
 		} else {
 			intVal, err := strconv.Atoi(el)
-			checkError(err)
+			util.CheckError(err)
 			sum += intVal
 		}
 	}
