@@ -1,5 +1,7 @@
 package	util
 
+// import "fmt"
+
 type Stack []byte
 
 func (s *Stack) IsEmpty() bool {
@@ -18,4 +20,21 @@ func (s *Stack) Pop() (byte, bool) {
 	el := (*s)[index]
 	*s = (*s)[:index]
 	return el, true
+}
+
+func (s *Stack) PopN(n int) ([]byte, bool) {
+	if len(*s) < n {
+		return []byte{}, false
+	}
+	popped := (*s)[len(*s)-n:]
+	// fmt.Println(string(*s))
+	if n == len(*s) {
+		*s = []byte{}
+	} else {
+		*s = (*s)[:len(*s)-n]
+	}
+
+	// fmt.Println(string(*s))
+
+	return popped, true
 }
