@@ -6,6 +6,7 @@ import (
 	"log"
 	"strconv"
 	s "strings"
+	"sort"
 
 	"github.com/wojtekolesinski/aoc-2022/util"
 )
@@ -23,16 +24,18 @@ func NewFile(name string, size int) *File {
 }
 
 type Dir struct {
-	name   string
-	parent *Dir
-	files  []*File
-	dirs   []*Dir
+	name   	string
+	parent 	*Dir
+	size 	int
+	files  	[]*File
+	dirs   	[]*Dir
 }
 
 func NewDir(name string, parent *Dir) *Dir {
 	return &Dir{
 		name:   name,
 		parent: parent,
+		size: 	-1,
 		files:  []*File{},
 		dirs:   []*Dir{},
 	}
@@ -64,6 +67,9 @@ func (d *Dir) Print(indentLevel ...int) {
 }
 
 func (d *Dir) getSize() int {
+	if d.size != -1 {
+		return d.size
+	}
 	size := 0
 	for _, file := range d.files {
 		size += file.size;
@@ -71,6 +77,7 @@ func (d *Dir) getSize() int {
 	for _, dir := range d.dirs {
 		size += dir.getSize()
 	}
+	d.size = size
 	return size
 }
 
@@ -93,9 +100,7 @@ func getListOfDirectories(d *Dir) []*Dir {
 	return dirs
 }
 
-func main() {
-	fmt.Println(part1())
-}
+
 
 func part1() int {
 	lines := s.Split(input, "\n")
@@ -111,20 +116,61 @@ func part1() int {
 			root.Print()
 			loop = false
 		}
-		
-		// fmt.Println(lines[index])
-		// root.Print()
-		// fmt.Println(root, currentDir)
 
 	}
+	root.getSize()
 	size := 0
 		for _, dir := range getListOfDirectories(root) {
-			dirSize := dir.getSize()
+			dirSize := dir.size
 			if dirSize < 100000 {
 				size += dirSize
 			}
 		}
 		return size
+}
+
+func (d Dir) String() string {
+	return fmt.Sprintf("%s: %d", d.name, d.size)
+}
+
+type BySize []Dir
+
+func (a BySize) Len() int           { return len(a) }
+func (a BySize) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a BySize) Less(i, j int) bool { return a[i].size < a[j].size }
+
+func part2() int {
+	lines := s.Split(input, "\n")
+	var root *Dir = NewDir("/", nil)
+	var currentDir = root
+	loop := true
+	for index := 1; index < len(lines) && loop; {
+		words := s.Split(lines[index], " ")
+		switch words[0] {
+		case "$":
+			handleCommand(words[1:], lines, &index, &currentDir)
+		default:
+			root.Print()
+			loop = false
+		}
+
+	}
+	totalDiskSpace := 70000000
+	neededDiskSpace := 30000000 - (totalDiskSpace - root.getSize())
+
+
+	possibleToDelete := []Dir{}
+	for _, dir := range getListOfDirectories(root) {
+		if dir.size > neededDiskSpace {
+			possibleToDelete = append(possibleToDelete, *dir)
+		}
+	}
+	fmt.Println(possibleToDelete)
+	sort.Sort(BySize(possibleToDelete))
+	fmt.Println(possibleToDelete)
+
+	
+	return possibleToDelete[0].size
 }
 
 func handleCommand(cmd, lines []string, currentIndex *int, currentDir **Dir) {
@@ -175,4 +221,9 @@ func handleCommand(cmd, lines []string, currentIndex *int, currentDir **Dir) {
 	default:
 		log.Fatal("unknown command: ", cmd)
 	}
+}
+
+func main() {
+	// fmt.Println(part1())
+	part2()
 }
