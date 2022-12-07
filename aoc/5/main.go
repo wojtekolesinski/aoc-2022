@@ -8,7 +8,7 @@ import (
 	"github.com/wojtekolesinski/aoc-2022/util"
 )
 
-//go:embed input.txt
+//go:embed large_input.txt
 var input string
 
 func main() {
@@ -108,14 +108,14 @@ func part2() {
 			if s.TrimSpace(line) == "" {
 				firstPart = false
 				
-				for number, pile := range piles {
-					fmt.Print(number+1, " ")
-					for _, c := range pile {
-						fmt.Print(string(c))
-					}
-					fmt.Print(" ")
-				}
-				fmt.Println()
+				// for number, pile := range piles {
+				// 	fmt.Print(number+1, " ")
+				// 	for _, c := range pile {
+				// 		fmt.Print(string(c))
+				// 	}
+				// 	fmt.Print(" ")
+				// }
+				// fmt.Println()
 				continue
 			}
 
@@ -129,7 +129,7 @@ func part2() {
 				}
 				j++
 			}
-			fmt.Println()
+			// fmt.Println()
 
 		} else {
 			words := s.Split(line, " ")
@@ -158,14 +158,14 @@ func part2() {
 
 			// }
 
-			for number, pile := range piles {
-				fmt.Print(number+1, " ")
-				for _, c := range pile {
-					fmt.Print(string(c))
-				}
-				fmt.Print(" ")
-			}
-			fmt.Println()
+			// for number, pile := range piles {
+			// 	fmt.Print(number+1, " ")
+			// 	for _, c := range pile {
+			// 		fmt.Print(string(c))
+			// 	}
+			// 	fmt.Print(" ")
+			// }
+			// fmt.Println()
 
 			// fmt.Println(line)
 		}
@@ -179,5 +179,5 @@ func part2() {
 		// }
 		// fmt.Println()
 	}
-	fmt.Println(piles)
+	fmt.Println()
 }
