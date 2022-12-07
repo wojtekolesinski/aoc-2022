@@ -11,7 +11,7 @@ import (
 	"github.com/wojtekolesinski/aoc-2022/util"
 )
 
-//go:embed input.txt
+//go:embed sample.txt
 var input string
 
 type File struct {
@@ -66,7 +66,7 @@ func (d *Dir) Print(indentLevel ...int) {
 	}
 }
 
-func (d *Dir) getSize() int {
+func (d *Dir) GetSize() int {
 	if d.size != -1 {
 		return d.size
 	}
@@ -75,7 +75,7 @@ func (d *Dir) getSize() int {
 		size += file.size;
 	}
 	for _, dir := range d.dirs {
-		size += dir.getSize()
+		size += dir.GetSize()
 	}
 	d.size = size
 	return size
@@ -100,8 +100,6 @@ func getListOfDirectories(d *Dir) []*Dir {
 	return dirs
 }
 
-
-
 func part1() int {
 	lines := s.Split(input, "\n")
 	var root *Dir = NewDir("/", nil)
@@ -118,7 +116,7 @@ func part1() int {
 		}
 
 	}
-	root.getSize()
+	root.GetSize()
 	size := 0
 		for _, dir := range getListOfDirectories(root) {
 			dirSize := dir.size
@@ -156,7 +154,7 @@ func part2() int {
 
 	}
 	totalDiskSpace := 70000000
-	neededDiskSpace := 30000000 - (totalDiskSpace - root.getSize())
+	neededDiskSpace := 30000000 - (totalDiskSpace - root.GetSize())
 
 
 	possibleToDelete := []Dir{}
@@ -165,10 +163,7 @@ func part2() int {
 			possibleToDelete = append(possibleToDelete, *dir)
 		}
 	}
-	fmt.Println(possibleToDelete)
 	sort.Sort(BySize(possibleToDelete))
-	fmt.Println(possibleToDelete)
-
 	
 	return possibleToDelete[0].size
 }
@@ -187,7 +182,6 @@ func handleCommand(cmd, lines []string, currentIndex *int, currentDir **Dir) {
 			if words[0] == "dir" {
 				dirName := words[1]
 				(*currentDir).AddDir(NewDir(dirName, *currentDir))
-				// fmt.Println("added dir ", dirName, " to dir ", currentDir.name)
 			} else {
 				fileName := words[1]
 				fileSize, err := strconv.Atoi(words[0])
@@ -195,24 +189,18 @@ func handleCommand(cmd, lines []string, currentIndex *int, currentDir **Dir) {
 
 				file := NewFile(fileName, fileSize)
 				(*currentDir).AddFile(file)
-				// fmt.Println("added file ", *file, " to dir ", currentDir.name)
 			}
 			*currentIndex++
 		}
 	case "cd":
 		dirName := cmd[1]
 		if dirName == ".." {
-			// fmt.Println("changing directory to ", (*currentDir).parent.name)
 			*currentDir = (*currentDir).parent
-			// fmt.Println("current directory: ", (*currentDir).name)
-
 			return
 		} else {
 			for _, dir := range (*currentDir).dirs {
 				if dir.name == dirName {
-					// fmt.Println("changing directory to ", dir.name)
 					*currentDir = dir
-					// fmt.Println("current directory: ", (*currentDir).name)
 					return
 				}
 			}
@@ -224,6 +212,5 @@ func handleCommand(cmd, lines []string, currentIndex *int, currentDir **Dir) {
 }
 
 func main() {
-	// fmt.Println(part1())
-	part2()
+	fmt.Println(part2())
 }
