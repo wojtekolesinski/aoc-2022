@@ -3,8 +3,8 @@ package main
 import (
 	_ "embed"
 	"fmt"
-	s "strings"
 	"strconv"
+	s "strings"
 )
 
 //go:embed input.txt
@@ -30,49 +30,39 @@ func abs(x int) int {
 	return x
 }
 
-func (r *RopeNode) determineTailMove(head RopeNode) {
-	// x, y := r.x, r.y
+func (r *RopeNode) determineMove(prev RopeNode) {
 
-	if head.x-r.x > 0 {
+	// x, y := r.x, r.y
+	if !tailMustMove(prev, *r) {
+		return
+	}
+	if prev.x-r.x > 0 {
 		r.x++
-	} else if head.x-r.x < 0 {
+	} else if prev.x-r.x < 0 {
 		r.x--
 	}
 
-	if head.y-r.y > 0 {
+	if prev.y-r.y > 0 {
 		r.y++
-	} else if head.y-r.y < 0 {
+	} else if prev.y-r.y < 0 {
 		r.y--
 	}
-
-	// return x, y
-
-	// if head.x == tail.x {
-	// 	return tail.x, (head.y + tail.y) / 2
-	// }
-
-	// if head.y == tail.y {
-	// 	return (head.x + tail.x) / 2, tail.y
-	// }
-
-	// dx, dy := head.x-tail.x, head.y-tail.y
-	// dx = dx / int(math.Abs(float64(dx)))
-	// dy = dy / int(math.Abs(float64(dy)))
-
-	// return tail.x + dx, tail.y + dy
 }
 
 func part1() {
 	lines := s.Split(input, "\n")
 
-	head, tail := RopeNode{x: 0, y: 0}, RopeNode{x: 0, y: 0}
+	// head, tail := RopeNode{x: 0, y: 0}, RopeNode{x: 0, y: 0}
 
-	tailLocations := map[RopeNode]bool{}
-	tailLocations[tail] = true
+	rope := make([]RopeNode, 10)
+	var head *RopeNode = &rope[0]
+	var tail *RopeNode = &rope[9]
+
+	visited := map[RopeNode]bool{}
+	// visited[*head] = true
 	for _, line := range lines {
 		direction := line[0]
 		distance, _ := strconv.Atoi(line[2:])
-
 
 		for i := 0; i < distance; i++ {
 			switch direction {
@@ -88,14 +78,25 @@ func part1() {
 				panic("SOMETHING WENT WRONG")
 			}
 
-			if tailMustMove(head, tail) {
-				tail.determineTailMove(head)
-				tailLocations[tail] = true
+			for j := 1; j < len(rope); j++ {
+				rope[j].determineMove(rope[j-1])
 			}
+			// if tailMustMove(head, tail) {
+			// 	tail.determineMove(head)
+			// 	visited[tail] = true
+			// }
+			visited[*tail] = true
+			fmt.Println(rope)
 		}
 
 	}
-	fmt.Println(len(tailLocations))
+	fmt.Println(len(visited))
+	// for key := range visited {
+	// 	fmt.Println(key)
+	// }
+	// fmt.Println(visited)
+	// arr := make([]RopeNode, 10)
+	// fmt.Println(arr)
 }
 
 func main() {
