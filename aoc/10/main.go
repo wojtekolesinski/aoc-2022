@@ -54,6 +54,53 @@ func part1() {
 	fmt.Println(sum)
 }
 
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	} 
+	return x
+}
+
+func draw(r Register) {
+	if abs((r.cycle % 40) - r.value - 1) < 2 {
+		fmt.Print("#")
+	} else {
+		fmt.Print(".")
+	}
+
+	if r.cycle % 40 == 0 {
+		fmt.Println()
+	}
+}
+
+func part2() {
+	lines := s.Split(input, "\n")
+
+	register := Register{value: 1, cycle: 1}
+	for _, line := range lines {
+		var command string
+		var value int
+		fmt.Sscanf(line, "%s %d", &command, &value)
+
+		switch command {
+		case "noop":
+			draw(register)
+			register.noop()
+		case "addx":
+			draw(register)
+			register.noop()
+			draw(register)
+			register.noop()
+			register.value += value
+		default:
+			panic("SOMETHING WENT WRONG")
+		}
+	}
+
+}
+
 func main() {
-	part1()
+	// part1()
+	part2()
+
 }
