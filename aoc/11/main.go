@@ -8,7 +8,7 @@ import (
 	s "strings"
 )
 
-//go:embed sample.txt
+//go:embed input.txt
 var input string
 
 type Monkey struct {
@@ -27,7 +27,24 @@ func (m *Monkey) makeTurn(first, second *Monkey) {
 		m.items = m.items[1:]
 
 		item = m.operation(item)
-		// item /= 3
+
+		if item % m.testNumber == 0 {
+			first.items = append(first.items, item)
+		} else {
+			second.items = append(second.items, item)
+		}
+		m.inspections++
+	}
+}
+
+func (m *Monkey) makeTurnV2(first, second *Monkey, denominator int) {
+	itemsLen := len(m.items)
+	for i := 0; i < itemsLen; i++ {
+		item := m.items[0]
+		m.items = m.items[1:]
+
+		item = m.operation(item)
+		item %= denominator
 
 		if item % m.testNumber == 0 {
 			first.items = append(first.items, item)
@@ -137,10 +154,15 @@ func part1() {
 func part2() {
 	monkeys := parseInput()
 	printMonkeys(monkeys)
+
+	denominator := 1
+	for _, m := range monkeys {
+		denominator *= m.testNumber
+	}
 	
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 10000; i++ {
 		for _, monkey := range monkeys {
-			monkey.makeTurn(monkeys[monkey.ifTrue], monkeys[monkey.ifFalse])
+			monkey.makeTurnV2(monkeys[monkey.ifTrue], monkeys[monkey.ifFalse], denominator)
 			// printMonkeys(monkeys)
 		}
 		// printMonkeys(monkeys)
