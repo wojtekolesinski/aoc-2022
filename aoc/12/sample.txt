@@ -1,0 +1,52 @@
+Sabqponm
+abcryxxl
+accszExk
+acctuvwj
+abdefghi
+
+grid := parseInput()
+
+	startingPoints := [][]int{}
+
+	// for y := 0; i < len(grid);
+
+	for y, row := range grid {
+		for x, el := range row {
+			if el == 'a' || el == 'S' {
+				startingPoints = append(startingPoints, []int{x, y})
+			}
+		}
+	}
+
+	results := []Node{}
+	for _, point := range startingPoints {
+		results = append(results, search(grid, point[0], point[1]))
+	}
+
+	// result := search(grid, 0, 20)
+
+	// fmt.Println(result)
+
+	min_steps := 99999
+	for _, result := range results {
+		if result.previous == nil {
+			continue
+		}
+
+		curr := result
+
+		steps := 0
+		for curr.previous != nil {
+			steps++
+			curr = *curr.previous
+
+		}
+		// if steps == 0 {
+		// 	fmt.Print(result)
+		// }
+		if steps < min_steps {
+			min_steps = steps
+		}
+		// fmt.Println(steps)
+	}
+	fmt.Println(min_steps)

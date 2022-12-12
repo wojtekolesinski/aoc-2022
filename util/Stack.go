@@ -4,8 +4,8 @@ package	util
 
 type Stack []byte
 
-func (s *Stack) IsEmpty() bool {
-	return len(*s) == 0
+func (s Stack) IsEmpty() bool {
+	return len(s) == 0
 }
 
 func (s *Stack) Push(el byte) {
