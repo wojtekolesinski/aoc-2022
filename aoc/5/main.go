@@ -19,7 +19,7 @@ func main() {
 func part1() {
 	lines := s.Split(input, "\n")
 
-	piles := make([]util.Stack, 9)
+	piles := make([]util.Stack[byte], 9)
 
 	fmt.Println(piles)
 	firstPart := true
@@ -45,7 +45,7 @@ func part1() {
 
 			for i, j := 1, 0; i < len(line); i+=4 {
 				if (line[i] != ' ') {
-					piles[j] = append(util.Stack{line[i]}, piles[j]...)
+					piles[j] = append(util.Stack[byte]{line[i]}, piles[j]...)
 				}
 				j++
 			}
@@ -99,7 +99,7 @@ func part1() {
 func part2() {
 	lines := s.Split(input, "\n")
 
-	piles := make([]util.Stack, 9)
+	piles := make([]util.Stack[byte], 9)
 
 	fmt.Println(piles)
 	firstPart := true
@@ -125,7 +125,7 @@ func part2() {
 
 			for i, j := 1, 0; i < len(line); i+=4 {
 				if (line[i] != ' ') {
-					piles[j] = append(util.Stack{line[i]}, piles[j]...)
+					piles[j] = append(util.Stack[byte]{line[i]}, piles[j]...)
 				}
 				j++
 			}
@@ -145,7 +145,6 @@ func part2() {
 			fmt.Println(line)
 
 			if popped, ok := piles[from-1].PopN(howMany); ok {
-				// fmt.Println("Pushing: ", string(popped[:]))
 				piles[to-1] = append(piles[to-1], popped...)
 			}
 

@@ -11,7 +11,11 @@ func (q *Queue[T]) Add(el ...T) {
 }
 
 func (q *Queue[T]) Pop() T {
-	popped := (*q)[0]
+	var popped T
+	if q.IsEmpty() {
+		return popped
+	}
+	popped = (*q)[0]
 	*q = (*q)[1:]
 	return popped
 }
