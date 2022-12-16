@@ -6,10 +6,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"github.com/wojtekolesinski/aoc-2022/util"
+	"aoc/util"
 )
-
-
 
 func main() {
 

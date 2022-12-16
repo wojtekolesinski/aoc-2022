@@ -1,7 +1,5 @@
 package	util
 
-// import "fmt"
-
 type Stack[T any] []T
 
 func (s Stack[T]) IsEmpty() bool {
@@ -33,7 +31,6 @@ func (s *Stack[T]) PopN(n int) ([]T, bool) {
 	} else {
 		*s = (*s)[:len(*s)-n]
 	}
-
 
 	return popped, true
 }

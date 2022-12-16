@@ -11,9 +11,6 @@ var input string
 
 func main() {
 	fmt.Println(part2())
-
-	
-
 }
 
 func part1() int {

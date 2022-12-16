@@ -1,3 +1,3 @@
-module github.com/wojtekolesinski/aoc-2022
+module aoc
 
 go 1.19

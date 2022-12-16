@@ -5,7 +5,7 @@ import (
 	"fmt"
 	s "strings"
 
-	"github.com/wojtekolesinski/aoc-2022/util"
+	"aoc/util"
 )
 
 //go:embed input.txt

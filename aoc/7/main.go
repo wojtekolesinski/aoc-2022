@@ -8,7 +8,7 @@ import (
 	s "strings"
 	"sort"
 
-	"github.com/wojtekolesinski/aoc-2022/util"
+	"aoc/util"
 )
 
 //go:embed sample.txt
