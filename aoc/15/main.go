@@ -4,6 +4,8 @@ import (
 	_ "embed"
 	"fmt"
 	s "strings"
+
+	. "aoc/util/math"
 )
 
 //go:embed input.txt
@@ -62,27 +64,6 @@ func ManhattanDistance(first, second Point) int {
 	return IntAbs(first.x-second.x) + IntAbs(first.y-second.y)
 }
 
-func IntAbs(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
-}
-
-func IntMin(x, y int) int {
-	if x < y {
-		return x
-	}
-	return y
-}
-
-func IntMax(x, y int) int {
-	if x > y {
-		return x
-	}
-	return y
-}
-
 func parseSensors() []Sensor {
 	lines := s.Split(input, "\n")
 	sensors := []Sensor{}
@@ -114,7 +95,6 @@ func CheckIntersection(line1, line2 []Point) (bool, Point) {
 	makeF := func (x1, x2 Point) func (int) int {
 		a := (x2.y - x1.y) / (x2.x - x1.x)
 		b := x1.y - a * x1.x
-		// fmt.Println(x1, x2, fmt.Sprintf("%dx + %d", a, b))
 		return func (x int) int {
 			return a * x + b
 		}
@@ -164,9 +144,6 @@ func checkIfCovered(point Point, sensors []Sensor) bool {
 func part2() {
 	sensors := parseSensors()
 
-	// for i := range sensors {
-	// 	fmt.Println(sensors[i])
-	// }
 	min, max := 0, 4000000
 	intersections := []Point{}
 	for i, s1 := range sensors {
