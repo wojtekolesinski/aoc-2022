@@ -155,7 +155,6 @@ func part2() {
 				for _, e2 := range s2.rightEdges {
 					if ok, point := CheckIntersection(e1, e2); ok {
 						if point.x >= min && point.x <= max && point.y >= min && point.y <= max {
-							
 							if !checkIfCovered(point, sensors) {
 								fmt.Println(point.x, point.y, point.x * 4000000 + point.y)
 								return
