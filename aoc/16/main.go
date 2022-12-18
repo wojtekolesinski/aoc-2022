@@ -3,10 +3,11 @@ package main
 import (
 	_ "embed"
 	"fmt"
-	"log"
 	"sort"
 	s "strings"
 	"time"
+
+	"aoc/util"
 )
 
 type Valve struct {
@@ -190,10 +191,7 @@ func (st StateWithElephant) hash() string {
 	return fmt.Sprintf("%s%s%s%s%d%d%s%d", first, second, fprev, sprev, st.time, st.flow, s.Join(o, " ")+" ", st.pressureReleased)
 }
 
-func timeTrack(start time.Time, name string) {
-	elapsed := time.Since(start)
-	log.Printf("%s took %s", name, elapsed)
-}
+
 
 func simulate(state State, valves map[string]Valve, visited *map[State]bool) int {
 	timeLimit := 29
@@ -459,7 +457,7 @@ func part1() {
 	}
 
 	func() {
-		defer timeTrack(time.Now(), "sim")
+		defer util.TimeTrack(time.Now(), "sim")
 		cache := make(map[State]bool)
 		result := simulate(initialState, valves, &cache)
 		fmt.Println("res: ", result)
@@ -489,7 +487,7 @@ func part2() {
 	}
 
 	func() {
-		defer timeTrack(time.Now(), "sim")
+		defer util.TimeTrack(time.Now(), "sim")
 		cache := make(map[string]bool)
 		result := simulate2(initialState, valves, &cache)
 		fmt.Println(result)
